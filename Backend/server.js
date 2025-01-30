@@ -2,19 +2,19 @@ const express = require("express");
 const cors = require("cors");
 const verificarPermissao = require("./middlewares/authMiddleware.js");
 
-// Criando a instância do Express **antes de usar `app.use()`**
+// Criando a instância do Express
 const app = express();
 
-// Configuração do CORS **depois da inicialização do `app`**
+// Configuração do CORS
 const corsOptions = {
-    origin: ["http://192.168.0.7:5173", "http://localhost:5173"], // ⚠️ Defina a origem correta do frontend
+    origin: ["http://192.168.0.7:5173", "http://localhost:5173"],
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
-    allowedHeaders: ["Content-Type", "Authorization"], // 🔹 Certifique-se de que `Authorization` está incluso
+    allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
-app.use(express.json()); // ✅ Middleware para permitir JSON no body das requisições
+app.use(express.json()); // Middleware para permitir JSON no body das requisições
 
 // Importação de controllers organizados
 const controllers = {
@@ -27,13 +27,17 @@ const controllers = {
     outraOmForaExped: require("./controllers/outraOmForaExpedController.js"),
     servicoAnterior: require("./controllers/servicoAnteriorController.js"),
     cadastroUsuario: require("./controllers/cadastroUsuarioController.js"),
+    editarUsuario: require("./controllers/editarUsuarioController.js"), // ✅ Adicionando o novo controller
 };
 
 // Rota de status do servidor
 app.get("/", (req, res) => res.json("Servidor ativo!"));
 
-// Registro automático dos controllers **depois da configuração**
-Object.values(controllers).forEach(controller => app.use("/", controller));
+// Registro automático dos controllers
+Object.entries(controllers).forEach(([name, controller]) => {
+    console.log(`✅ Controller carregado: ${name}`);
+    app.use("/", controller);
+});
 
 // Rota protegida para verificar autenticação
 app.get("/recursoProtegido", verificarPermissao([0, 1, 2]), (req, res) => {

@@ -18,6 +18,7 @@ import OutraOmForaExpediente from "../../pages/outraOm/foraExpediente/oomForaExp
 
 import CadastroMil from "../../pages/admin/cadastroMil.jsx";
 import CadastroUsuario from "../../pages/admin/cadastroUsuario.jsx";
+import EditarUsuario from "../editarUsuario/usuarios.jsx";
 
 import ArmazenarServico from "../../pages/relatorio/armazenarServico/armazenarServico.jsx";
 import RelatorioServicoAnterior from "../../pages/relatorio/servicoAnterior/servicoAnterior.jsx";
@@ -108,8 +109,10 @@ export default function Rotas() {
 
                 {/* Rotas acessíveis apenas por SUPERADMIN */}
                 {[
-                    { path: "/cadastroMil", component: <CadastroMil />},
-                    { path: "/cadastroUsuario", component: <CadastroUsuario/> },
+                    { path: "/cadastroMil", component: <CadastroMil /> },
+                    { path: "/cadastroUsuario", component: <CadastroUsuario /> },
+                    { path: "/usuarios", component: <EditarUsuario /> }, // ✅ Adicionada rota para a listagem
+                    { path: "/editarUsuario/:id", component: <EditarUsuario /> }, // ✅ Mantendo a rota correta
                 ].map(({ path, component }) => (
                     <Route key={path} path={path} element={
                         <ProtectedRoute allowedRoles={[2]}>
