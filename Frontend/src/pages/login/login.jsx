@@ -10,6 +10,7 @@ export default function Login() {
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false); // Novo estado para alternar a visibilidade da senha
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,15 +22,12 @@ export default function Login() {
       });
 
       if (response.data.token) {
-        // Salva o token no localStorage
         localStorage.setItem("token", response.data.token);
 
-        // Busca a configuração do serviço
         let configServicoConfigurado = 0;
         try {
           const responseConfig = await axios.get(`${dbConfig()}/config_servico`);
           const configuracoes = responseConfig.data;
-
           if (configuracoes.length > 0) {
             configServicoConfigurado = configuracoes[configuracoes.length - 1].configurado;
           }
@@ -37,13 +35,10 @@ export default function Login() {
           console.warn("Erro ao buscar configurações do serviço:", configError);
         }
 
-        // Verifica a autenticação e obtém o nível de acesso
         const userRole = await verificarAutenticacao();
 
         if (userRole !== null) {
           toast.success("Logado com sucesso!");
-
-          // Aguarda um tempo antes de redirecionar
           setTimeout(() => {
             if (configServicoConfigurado === 1) {
               window.location.href = "/home";
@@ -98,19 +93,38 @@ export default function Login() {
               />
             </div>
 
-            <div className="mb-3">
+            <div className={`mb-3 ${estiloLogin["senha-container"]}`}>
               <label htmlFor="senha" className="form-label">
                 Senha
               </label>
-              <input
-                type="password"
-                id="senha"
-                placeholder="Senha"
-                className="form-control"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative", width: "100%" }}>
+                <input
+                  type={mostrarSenha ? "text" : "password"}
+                  id="senha"
+                  placeholder="Senha"
+                  className="form-control"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className={estiloLogin["senha-toggle"]}
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "18px"
+                  }}
+                >
+                  {mostrarSenha ? "👀" : "🫣"}
+                </button>
+              </div>
             </div>
 
             <button

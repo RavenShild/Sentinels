@@ -46,3 +46,29 @@
   width: 150px !important;
 }
 
+.senha-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.senha-container div {
+  position: relative;
+  width: 100%;
+}
+
+.senha-container input {
+  width: 100%;
+  padding-right: 45px; /* Garante espaço para o botão */
+}
+
+.senha-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}

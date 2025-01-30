@@ -128,7 +128,7 @@ export default function AtualizarServico() {
                         />
                     </div>
                     <div className="col-md-3">
-                        <label htmlFor="sgt-nome-guerra" className="form-label">Sargento Permanência</label>
+                        <label htmlFor="sgt-nome-guerra" className="form-label">Comandante da Guarda</label>
                         <input
                             type="text"
                             className="form-control"

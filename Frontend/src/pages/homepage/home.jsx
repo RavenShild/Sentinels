@@ -105,6 +105,7 @@ function SuperAdminView() {
                 <CardRelatorio link="/relatorio_armazenar_servico" titulo="Finalizar Serviço" />
                 <CardRelatorio link="/cadastroMil" titulo="Cadastrar Militares" />
                 <CardRelatorio link="/cadastroUsuario" titulo="Cadastrar Usuários" />
+                <CardRelatorio link="/usuarios" titulo="Editar Usuários" />
             </div>
         </>
     );

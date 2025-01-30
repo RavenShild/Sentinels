@@ -53,10 +53,10 @@ export default function Manual() {
                     <figcaption className="text-center">Desabilite a opção "cabeçalhos e rodapés" para padronização do documento.</figcaption>
                 </div>
 
-                <p><b>Importante:</b>A impressão deve ser efetuada no dia da passagem de serviço, assegurando o correto preenchimento automático das datas.</p>
+                <p><b>Importante:</b>A impressão deve ser realizada apenas no dia da passagem de serviço e somente em caso de alterações ocorridas durante o serviço.</p>
 
                 <h4>Passagem de Serviço e Recomeço</h4>
-                <p>Após a passagem de serviço, o usuário com perfil de Administrador deve armazenar o serviço anterior. Isso possibilita que todos os registros fiquem disponíveis para consulta durante as próximas 24 horas, e o sistema esteja pronto para receber novos registros do dia em questão. Importante: A função "armazenar o serviço anterior" deve ser executada somente após as fichas serem impressas e assinadas, pois não será possível realizar edições posteriormente.</p>
+                <p>O Comandante da Guarda que está saindo de serviço é responsável por encerrar o serviço no sistema e realizar o logout. Somente após essa etapa, o Comandante da Guarda que assume o serviço deverá efetuar o login e configurar o serviço subsequente.</p>
 
                 <div className="d-flex flex-column mb-3">
                     <img src={Passagem} className={estilo.img} />
