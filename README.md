@@ -18,7 +18,7 @@ Módulos funcionando:
  - Finalizar serviço
  - Cadastrar militar
  - Cadastrar usuário
- - Editar usuário *
+ - Editar usuário * * Novo módulo
 
-* Novo módulo
+
 
