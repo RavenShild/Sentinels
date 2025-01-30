@@ -1,0 +1,11 @@
+.container_manual {
+    background-color: white;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 15px;
+}
+
+.img {
+    width: 600px;
+    margin: 0 auto;
+}

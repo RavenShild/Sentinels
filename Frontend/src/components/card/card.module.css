@@ -1,0 +1,58 @@
+.card_base {
+    width: 130px !important;
+    height: 130px !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.card_base p {
+    margin-bottom: 0 !important;
+}
+
+.civis {
+    background-color: #900C0C !important;
+}
+
+.civis:hover {
+    background-color: #740a0a !important;
+    color: #fff !important;
+}
+
+.mil {
+    background-color: #008BD2 !important;
+}
+
+.mil:hover {
+    background-color: #0076b1 !important;
+    color: #fff !important;
+}
+
+.outrasOm {
+    background-color: #004507 !important;
+}
+
+.outrasOm:hover {
+    background-color: #005809 !important;
+    color: #fff !important;
+}
+
+.relatorio {
+    background-color: #BA7713 !important;
+}
+
+.relatorio:hover {
+    background-color: #9d6510 !important;
+    color: #fff !important;
+}
+
+.fichavtr {
+    background-color: #0066ff !important;
+}
+
+.fichavtr:hover {
+    background-color: #024ec0 !important;
+    color: #fff !important;
+}

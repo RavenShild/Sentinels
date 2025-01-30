@@ -1,0 +1,6 @@
+@media print {
+    .container_local {
+        min-width: 297mm;
+        max-width: 297mm;
+    }
+}

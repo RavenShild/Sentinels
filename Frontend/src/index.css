@@ -1,0 +1,4 @@
+.invalid-feedback.text-warning {
+    color: yellow !important;
+    /* Força a cor amarela */
+}

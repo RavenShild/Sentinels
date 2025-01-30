@@ -1,0 +1,12 @@
+.underline {
+    width: 100%; 
+    max-width: 300px; 
+    margin: 0 auto; 
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.impressao_margem {
+    margin-top: 70px;
+    text-align: center;
+}

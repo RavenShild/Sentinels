@@ -1,0 +1,9 @@
+.bnt-acao {
+    border: 0;
+    background: none;
+}
+
+th,
+td {
+    padding: 2px !important;
+}
