@@ -20,5 +20,9 @@ Módulos funcionando:
  - Cadastrar usuário
  - Editar usuário * * Novo módulo
 
+Executar Backend
+- npm start
 
+Executar Frontend
+- npm run dev -- --host
 
