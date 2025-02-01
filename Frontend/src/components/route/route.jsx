@@ -111,8 +111,8 @@ export default function Rotas() {
                 {[
                     { path: "/cadastroMil", component: <CadastroMil /> },
                     { path: "/cadastroUsuario", component: <CadastroUsuario /> },
-                    { path: "/usuarios", component: <EditarUsuario /> }, // ✅ Adicionada rota para a listagem
-                    { path: "/editarUsuario/:id", component: <EditarUsuario /> }, // ✅ Mantendo a rota correta
+                    { path: "/usuarios", component: <EditarUsuario /> },  
+                    { path: "/editarUsuario/:id", component: <EditarUsuario /> }, 
                 ].map(({ path, component }) => (
                     <Route key={path} path={path} element={
                         <ProtectedRoute allowedRoles={[2]}>

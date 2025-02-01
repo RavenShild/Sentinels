@@ -6,14 +6,14 @@ const ProtectedRoute = ({ allowedRoles, children }) => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-        return <Navigate to="/login" replace />; // Redireciona se não estiver autenticado
+        return <Navigate to="/login" replace />;
     }
-
+    
     const decodedToken = jwtDecode(token);
-    const userRole = Number(decodedToken?.role); // 🔹 Converte para número
-
+    const userRole = Number(decodedToken?.role);
+    
     if (!allowedRoles.includes(userRole)) {
-        return <Navigate to="/unauthorized" replace />; // Redireciona se não tiver permissão
+        return <Navigate to="/unauthorized" replace />;
     }
 
     return React.isValidElement(children) ? children : <>{children}</>;
