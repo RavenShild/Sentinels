@@ -24,5 +24,5 @@ Executar Backend
 - npm start
 
 Executar Frontend
-- npm run dev -- --host
+- npm run dev
 
