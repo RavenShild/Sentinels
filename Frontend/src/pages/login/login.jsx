@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import estiloLogin from "./login.module.css";
-import logo from "../../assets/img/cav.png";
+import logo from "../../assets/img/Cav.png";
 import { verificarAutenticacao } from "../../components/autenticacao/autenticacao";
 import dbConfig from "../../components/util/dbConfig";
 import { toast } from "react-toastify";
@@ -16,49 +16,51 @@ export default function Login() {
     e.preventDefault();
     setCarregando(true);
     try {
-      const response = await axios.post(`${dbConfig()}/login`, {
-        usuario: usuario.trim(),
-        senha: senha
-      });
+        const response = await axios.post(`${dbConfig()}/login`, {
+            usuario: usuario.trim(),
+            senha: senha
+        });
 
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+        if (response.data.token) {
+            localStorage.setItem("token", response.data.token);
 
-        let configServicoConfigurado = 0;
-        try {
-          const responseConfig = await axios.get(`${dbConfig()}/config_servico`);
-          const configuracoes = responseConfig.data;
-          if (configuracoes.length > 0) {
-            configServicoConfigurado = configuracoes[configuracoes.length - 1].configurado;
-          }
-        } catch (configError) {
-          console.warn("Erro ao buscar configurações do serviço:", configError);
-        }
-
-        const userRole = await verificarAutenticacao();
-
-        if (userRole !== null) {
-          toast.success("Logado com sucesso!");
-          setTimeout(() => {
-            if (configServicoConfigurado === 1) {
-              window.location.href = "/home";
-            } else {
-              window.location.href = "/configServico";
+            let configServicoConfigurado = 0;
+            try {
+                const responseConfig = await axios.get(`${dbConfig()}/config_servico`);
+                const configuracoes = responseConfig.data;
+                if (configuracoes.length > 0) {
+                    configServicoConfigurado = configuracoes[configuracoes.length - 1].configurado;
+                }
+            } catch (configError) {
+                console.warn("Erro ao buscar configurações do serviço:", configError);
             }
-          }, 2000);
+
+            const userRole = await verificarAutenticacao();
+
+            if (userRole !== null) {
+                toast.success("Logado com sucesso!");
+                setTimeout(() => {
+                    if (userRole === 1) { // 🔹 Administrador vai para /relatorio_servico_anterior
+                        window.location.href = "/relatorio_servico_anterior";
+                    } else if (configServicoConfigurado === 1) {
+                        window.location.href = "/home";
+                    } else {
+                        window.location.href = "/configServico";
+                    }
+                }, 2000);
+            } else {
+                toast.error("Erro na autenticação, tente novamente.");
+            }
         } else {
-          toast.error("Erro na autenticação, tente novamente.");
+            toast.error("Usuário ou senha incorretos!");
         }
-      } else {
-        toast.error("Usuário ou senha incorretos!");
-      }
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      toast.error("Falha na autenticação, verifique suas credenciais.");
+        console.error("Erro ao fazer login:", error);
+        toast.error("Falha na autenticação, verifique suas credenciais.");
     } finally {
-      setCarregando(false);
+        setCarregando(false);
     }
-  };
+};
 
   return (
     <>

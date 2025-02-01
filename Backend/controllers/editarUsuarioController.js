@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./dbConfig");
-const bcrypt = require("bcrypt"); // ✅ Para criptografar a senha
+const bcrypt = require("bcrypt");
 const router = express.Router();
 
 // Rota para listar todos os usuários
