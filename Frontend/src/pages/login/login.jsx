@@ -103,7 +103,7 @@ export default function Login() {
                 <input
                   type={mostrarSenha ? "text" : "password"}
                   id="senha"
-                  placeholder="Senha"
+                  placeholder="Insira sua senha"
                   className="form-control"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
@@ -124,7 +124,7 @@ export default function Login() {
                     fontSize: "18px"
                   }}
                 >
-                  {mostrarSenha ? "👀" : "🫣"}
+                  <i className={`bi ${mostrarSenha ? "bi-eye-slash-fill" : "bi-eye-fill"}`}></i>
                 </button>
               </div>
             </div>
