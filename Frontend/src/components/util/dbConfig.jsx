@@ -1,3 +1,3 @@
 export default function dbConfig() {
-    return "http://localhost:8081"
+    return "http://" + window.location.hostname + ":8081";
 }

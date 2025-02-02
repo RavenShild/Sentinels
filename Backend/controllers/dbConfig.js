@@ -4,7 +4,7 @@ const dbConfig = ({
   database: "sisregex",
   host: "localhost",
   user: "root",
-  password: "R4v3nSh1ldm0n@4l1st@rm7!goIMP@!!!"
+  password: "senha_db"
 });
 
 const connection = mysql.createPool(dbConfig);
