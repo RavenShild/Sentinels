@@ -14,8 +14,7 @@ export default function EditarUsuario() {
     const [usuarios, setUsuarios] = useState([]); // Lista de usuários
     const [formData, setFormData] = useState({
         id: "", 
-        usuario: "", 
-        nomeCompleto: "", 
+        usuario: "",  
         administrador: "0", 
         novaSenha: ""
     });
@@ -94,12 +93,7 @@ export default function EditarUsuario() {
                             <div className="mb-3">
                                 <label className="form-label">Usuário</label>
                                 <input type="text" name="usuario" className="form-control" value={formData.usuario} onChange={handleChange} required />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Nome Completo</label>
-                                <input type="text" name="nomeCompleto" className="form-control" value={formData.nomeCompleto} onChange={handleChange} required />
-                            </div>
-                            
+                            </div> 
                             {/* 🔽 CAMPO PARA NOVA SENHA 🔽 */}
                             <div className="mb-3">
                                 <label className="form-label">Nova Senha</label>

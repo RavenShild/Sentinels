@@ -7,7 +7,9 @@ const app = express();
 
 // Configuração do CORS
 const corsOptions = {
-    origin: ["http://192.168.0.7:5173", "http://localhost:5173" , "http://10.24.133.75:5173" , "http://192.168.15.162:5173"],
+    origin: function(origin, callback){
+        callback(null, origin);
+    },
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -72,7 +74,7 @@ app.post("/cadastroMil", verificarPermissao([2]), async (req, res) => {
 
 // Inicialização do servidor
 const PORT = 8081;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     const now = new Date();
     const formattedDate = now.toLocaleDateString("pt-BR");
     console.log(`✅ Servidor iniciado em ${formattedDate} na porta ${PORT}`);
