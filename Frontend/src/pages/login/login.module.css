@@ -9,6 +9,7 @@
   justify-content: center;
   margin: 0 auto;
 }
+
 .logo_container {
   background-color: white;
   width: 200px;
@@ -19,6 +20,7 @@
   justify-content: center;
   border-radius: 50%;
 }
+
 .form {
   display: flex;
   align-items: center;
@@ -30,6 +32,7 @@
   -webkit-backdrop-filter: blur(12.9px);
   padding: 25px;
   min-width: 700px;
+  margin-top: -20px;
 }
 
 .login_form {
@@ -44,6 +47,12 @@
 
 .logo {
   width: 120px !important;
+}
+
+.logo2{
+  width: 500px;
+  height: 280px;
+  margin-top: -140px;
 }
 
 .senha-container {
