@@ -37,6 +37,7 @@ function ComumView() {
             <h3>Civis</h3>
             <div className="d-flex mt-2">
                 <CardCivis link="/civis" titulo="Registro" />
+                <CardCivis link="/civis_veiculo" titulo="Veículo" />
             </div>
             <hr />
 
@@ -44,6 +45,7 @@ function ComumView() {
             <div className="d-flex mt-2">
                 <CardMilitares link="/durante_expediente" titulo="Durante o expediente" />
                 <CardMilitares link="/fora_expediente" titulo="Após o expediente" />
+                <CardMilitares link="/viatura_qg" titulo="Viatura" />
             </div>
             <hr />
 
@@ -51,6 +53,7 @@ function ComumView() {
             <div className="d-flex mt-2">
                 <CardOutrasOm link="/outra_om_durante_expediente" titulo="Durante o expediente" />
                 <CardOutrasOm link="/outra_om_fora_expediente" titulo="Fora de expediente" />
+                <CardOutrasOm link="/viatura_oom" titulo="Viatura" />
             </div>
             <hr />
 
@@ -82,6 +85,7 @@ function SuperAdminView() {
             <h3>Civis</h3>
             <div className="d-flex mt-2">
                 <CardCivis link="/civis" titulo="Registro" />
+                <CardCivis link="/civis_veiculo" titulo="Veículo" />
             </div>
             <hr />
 
@@ -89,6 +93,7 @@ function SuperAdminView() {
             <div className="d-flex mt-2">
                 <CardMilitares link="/durante_expediente" titulo="Durante o expediente" />
                 <CardMilitares link="/fora_expediente" titulo="Após o expediente" />
+                <CardMilitares link="/viatura_qg" titulo="Viatura" />
             </div>
             <hr />
 
@@ -96,6 +101,7 @@ function SuperAdminView() {
             <div className="d-flex mt-2">
                 <CardOutrasOm link="/outra_om_durante_expediente" titulo="Durante o expediente" />
                 <CardOutrasOm link="/outra_om_fora_expediente" titulo="Fora de expediente" />
+                <CardOutrasOm link="/viatura_oom" titulo="Viatura" />
             </div>
             <hr />
 

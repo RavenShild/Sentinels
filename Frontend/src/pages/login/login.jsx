@@ -16,48 +16,49 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setCarregando(true);
+    
     try {
         const response = await axios.post(`${dbConfig()}/login`, {
             usuario: usuario.trim(),
             senha: senha
         });
 
+        console.log("Resposta do login:", response.data);
+        if (!response.data || !response.data.token) {
+            console.error("Erro: O token não foi retornado pelo backend.");
+            return;
+        }
+
         if (response.data.token) {
             localStorage.setItem("token", response.data.token);
+            console.log("Token salvo no localStorage:", localStorage.getItem("token"));
+            toast.success("Logado com sucesso!");
 
-            let configServicoConfigurado = 0;
-            try {
-                const responseConfig = await axios.get(`${dbConfig()}/config_servico`);
-                const configuracoes = responseConfig.data;
-                if (configuracoes.length > 0) {
-                    configServicoConfigurado = configuracoes[configuracoes.length - 1].configurado;
+            const servicoResponse = await axios.get(`${dbConfig()}/config_servico/servico_configurado`);
+            const servicoAtivo = servicoResponse.data.length > 0;
+
+            setTimeout(() => {
+                if (servicoAtivo) {
+                    window.location.href = "/home";
+                } else {
+                    window.location.href = "/configServico"; //
                 }
-            } catch (configError) {
-                console.warn("Erro ao buscar configurações do serviço:", configError);
-            }
-
-            const userRole = await verificarAutenticacao();
-
-            if (userRole !== null) {
-                toast.success("Logado com sucesso!");
-                setTimeout(() => {
-                    if (userRole === 1) {
-                        window.location.href = "/relatorio_servico_anterior";
-                    } else if (configServicoConfigurado === 1) {
-                        window.location.href = "/home";
-                    } else {
-                        window.location.href = "/configServico";
-                    }
-                }, 2000);
-            } else {
-                toast.error("Erro na autenticação, tente novamente.");
-            }
-        } else {
-            toast.error("Usuário ou senha incorretos!");
+            }, 2000);
         }
     } catch (error) {
         console.error("Erro ao fazer login:", error);
-        toast.error("Falha na autenticação, verifique suas credenciais.");
+
+        if (error.response) {
+            if (error.response.status === 403) {
+                toast.error("Você não é o Comandante da Guarda!");
+            } else if (error.response.status === 401) {
+                toast.error("Usuário ou senha incorretos!");
+            } else {
+                toast.error("Erro ao autenticar, tente novamente.");
+            }
+        } else {
+            toast.error("Erro de conexão com o servidor.");
+        }
     } finally {
         setCarregando(false);
     }

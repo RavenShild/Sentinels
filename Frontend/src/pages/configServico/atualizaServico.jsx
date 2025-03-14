@@ -111,7 +111,7 @@ export default function AtualizarServico() {
                 </div>
 
                 <h1 className="mt-2 text-center">Atualizar Serviço</h1>
-                <p className="mt-3 text-center">Esta página proporciona a edição dos membros da guarnição de serviço, possibilitando a correção da data em que o serviço estará em vigor.</p>
+                <p className="mt-3 text-center">Esta página proporciona a edição dos membros da guarnição de serviço.</p>
 
                 <form className="row g-3 was-validated mt-4" id="needs-validation">
                     <h4>Data do serviço</h4>
@@ -123,8 +123,7 @@ export default function AtualizarServico() {
                             className="form-control"
                             id="data-servico"
                             value={data}
-                            onChange={(e) => setData(e.target.value)}
-                            required
+                            readOnly // Impede que o usuário altere a data
                         />
                     </div>
                     <div className="col-md-3">
@@ -164,7 +163,9 @@ export default function AtualizarServico() {
                     </div>
                     
                     <button className="btn btn-success" onClick={handleRegistrarSubmit} type="submit">Salvar</button>
-                    <Link to="/home" className={`${estiloAtualizar.botao_cancelar}`}><button className={`${estiloAtualizar.botao_cancelar} btn btn-danger`} type="button">Cancelar</button></Link>
+                    <Link to="/home" className={`${estiloAtualizar.botao_cancelar}`}>
+                        <button className={`${estiloAtualizar.botao_cancelar} btn btn-danger`} type="button">Cancelar</button>
+                    </Link>
                 </form>
             </div>
             <Footer />

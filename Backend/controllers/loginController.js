@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const router = express.Router();
-const JWT_SECRET = "seuSegredoSuperSecreto"; // ⚠️ Idealmente, isso deve estar em uma variável segura
+const JWT_SECRET = "seuSegredoSuperSecreto";
 
 router.post("/login", async (req, res) => {
     try {
@@ -28,31 +28,50 @@ router.post("/login", async (req, res) => {
 
             const usuarioDb = result[0];
 
-            // Verifica a senha corretamente
+            // Verifica a senha
             const senhaCorreta = await bcrypt.compare(senha, usuarioDb.senha);
             if (!senhaCorreta) {
                 return res.status(401).json({ error: "Usuário ou senha inválidos" });
             }
 
-            // ✅ Garantir que `role` seja corretamente definido, inclusive quando for `0`
-            const role = usuarioDb.administrador; // ⚠️ Mudamos para pegar diretamente sem verificações erradas
+            const role = usuarioDb.administrador;
             const id = usuarioDb.id;
+            const nome_completo = usuarioDb.nome_completo;
 
-            console.log(`Usuário autenticado: ${usuario}, ID: ${id}, Role: ${role}`); // ✅ Log para verificar os valores
+            console.log(`Usuário autenticado: ${usuario}, ID: ${id}, Role: ${role}`);
 
-            try {
-                // Criar token JWT de forma segura
-                const token = jwt.sign(
-                    { id: id, usuario: usuario, role: role }, // ✅ Agora inclui `id` no payload
-                    JWT_SECRET,
-                    { expiresIn: "2h" }
-                );
+            // ⚠️ VERIFICAR SE EXISTE UM SERVIÇO EM ANDAMENTO
+            const queryServico = `SELECT * FROM config_servico WHERE configurado = 1 LIMIT 1`;
+            db.query(queryServico, async (err, servicoResult) => {
+                if (err) {
+                    console.error("Erro ao verificar serviço ativo:", err);
+                    return res.status(500).json({ error: "Erro ao verificar serviço ativo" });
+                }
 
-                return res.status(200).json({ token });
-            } catch (jwtError) {
-                console.error("Erro ao criar o token JWT:", jwtError);
-                return res.status(500).json({ error: "Erro ao gerar autenticação" });
-            }
+                if (servicoResult.length > 0) {
+                    const servicoAtivo = servicoResult[0];
+
+                    // Se for um usuário comum e NÃO for o responsável pelo serviço, bloqueia o login
+                    if (role === 0 && nome_completo !== servicoAtivo.sgtNomeGuerra) {
+                        return res.status(403).json({ error: "Acesso negado! Apenas o Comandante da Guarda resposável pelo serviço pode logar." });
+                    }
+                }
+
+                // Gera o token JWT
+                try {
+                    const token = jwt.sign(
+                        { id: id, usuario: usuario, role: role },
+                        JWT_SECRET,
+                        { expiresIn: "2h" }
+                    );
+                    
+                    return res.status(200).json({ token });
+                    
+                } catch (jwtError) {
+                    console.error("Erro ao criar o token JWT:", jwtError);
+                    return res.status(500).json({ error: "Erro ao gerar autenticação" });
+                }
+            });
         });
 
     } catch (error) {

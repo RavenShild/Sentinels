@@ -8,13 +8,18 @@ import ProtectedRoute from "../protect/ProtectedRoute.jsx";
 import Login from "../../pages/login/login.jsx";
 import ErroPage from "../../pages/erros/erros.jsx";
 import HomePage from "../../pages/homepage/home.jsx";
+
 import Civis from "../../pages/civis/civis.jsx";
+import Veiculo from "../../pages/civis/civis_veiculo/veiculo.jsx"
 
 import QGDuranteExped from "../../pages/qg/duranteExpediente/duranteExpediente.jsx";
 import QGForaExped from "../../pages/qg/foraExpediente/foraExpediente.jsx";
+import QGViatura from "../../pages/qg/viatura/viatura_qg.jsx"
 
 import OutraOmDuranteExpediente from "../../pages/outraOm/duranteExpediente/oomDuranteExpediente.jsx";
 import OutraOmForaExpediente from "../../pages/outraOm/foraExpediente/oomForaExpediente.jsx";
+import OutraOmViatura from "../../pages/outraOm/viatura/viatura_oom.jsx"
+import Visitantes from "../../pages/visitantes/visitantes.jsx";
 
 import CadastroMil from "../../pages/admin/cadastroMil.jsx";
 import CadastroUsuario from "../../pages/admin/cadastroUsuario.jsx";
@@ -87,10 +92,13 @@ export default function Rotas() {
                 {/* Rotas acessíveis por COMUNS, ADMINS e SUPERADMINS */}
                 {[
                     { path: "/civis", component: <Civis /> },
+                    { path: "/civis_veiculo", component: <Veiculo /> },
                     { path: "/durante_expediente", component: <QGDuranteExped />},
                     { path: "/fora_expediente", component: <QGForaExped />},
+                    { path: "/viatura_qg", component: <QGViatura />},
                     { path: "/outra_om_durante_expediente", component: <OutraOmDuranteExpediente />},
                     { path: "/outra_om_fora_expediente", component: <OutraOmForaExpediente />},
+                    { path: "/viatura_oom", component: <OutraOmViatura />},
                     { path: "/relatorio_armazenar_servico", component: <ArmazenarServico />},
                     { path: "/relatorio_servico_anterior", component: <RelatorioServicoAnterior />},
                     { path: "/relatorio_servico_anterior/civis_registro", component: <ServicoAnteriorCivisRegistro />},
