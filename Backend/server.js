@@ -23,13 +23,16 @@ const controllers = {
     login: require("./controllers/loginController.js"),
     configuracao: require("./controllers/configuracaoServicoController.js"),
     civis: require("./controllers/civisController.js"),
+    civisVeiculo: require("./controllers/civisVeiculoController.js"),
     qgDuranteExp: require("./controllers/qgDuranteExpedController.js"),
     qgForaExp: require("./controllers/qgForaExpedController.js"),
+    qgViatura: require("./controllers/qgViaturaController.js"),
     outraOmDuranteExped: require("./controllers/outraOmDuranteExpedController.js"),
     outraOmForaExped: require("./controllers/outraOmForaExpedController.js"),
+    outraOmViatura: require("./controllers/outraOmViaturaController.js"),
     servicoAnterior: require("./controllers/servicoAnteriorController.js"),
     cadastroUsuario: require("./controllers/cadastroUsuarioController.js"),
-    editarUsuario: require("./controllers/editarUsuarioController.js"), // ✅ Adicionando o novo controller
+    editarUsuario: require("./controllers/editarUsuarioController.js"),
 };
 
 // Rota de status do servidor

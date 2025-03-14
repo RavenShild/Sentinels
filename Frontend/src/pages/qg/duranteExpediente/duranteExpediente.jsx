@@ -55,67 +55,52 @@ export default function QGDuranteExpediente() {
 
     // Registro do civil pelo modal:
     const handleRegistrarSubmit = async (event) => {
-
-        // Previne o comportamento padrão do formulário ao ser submetido (evita atualziar a página)
         event.preventDefault();
-
-        // Captura o ID da configuração do serviço em vigor
+    
         let servConfigID;
-
         try {
-            // Obtém a última configuração de serviço
             const configId = await getLatestConfigServicoId();
             servConfigID = configId.id;
             if (!servConfigID) {
                 throw new Error("Nenhuma configuração encontrada.");
             }
         } catch (error) {
-            // Em caso de erro, exibe um alerta e retorna
-            // alert('Erro ao obter a configuração do serviço:', error);
             toast.error(error);
             return;
         }
-
-        // console.log(servConfigID);
-
-        // Coleta os valores dos campos do formulário
+    
+        // Captura os valores do formulário
         const postoGraduacaoRegistro = document.getElementById('pg').value;
         const nomeGuerraRegistro = document.getElementById('nome-guerra').value;
         const idtMilitarRegistro = document.getElementById('idt-mil').value;
-        const dataEntradaRegistro = document.getElementById('data-entrada').value;
         const horaEntradaRegistro = document.getElementById('hora-entrada').value;
         const horaSaidaRegistro = document.getElementById('hora-saida').value;
         const origemRegistro = document.getElementById('origem').value;
-
-        // Organiza os dados coletados em um objeto
+    
+        // Define a data atual automaticamente
+        const dataAtual = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    
         const dados = {
             postoGraduacaoRegistro,
             nomeGuerraRegistro,
             idtMilitarRegistro,
-            dataEntradaRegistro,
+            dataEntradaRegistro: dataAtual,  // Data fixa
             horaEntradaRegistro: horaEntradaRegistro && horaEntradaRegistro.trim() !== "" ? horaEntradaRegistro : null,
             horaSaidaRegistro: horaSaidaRegistro && horaSaidaRegistro.trim() !== "" ? horaSaidaRegistro : null,
             origemRegistro,
             servConfigID,
         };
-
+    
         try {
-            // Envia uma requisição POST para adicionar um novo registro
             const response = await fetch(`${dbConfig()}/qg_durante_expediente`, {
-                // Utiliza o método POST
                 method: 'POST',
-                headers: {
-                    // Define o tipo de conteúdo como JSON
-                    'Content-Type': 'application/json',
-                },
-                // Converte o objeto 'dados' para JSON e o envia no corpo da requisição
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dados),
             });
-
-            // Converte a resposta da requisição para JSON
+    
             const responseData = await response.json();
-
-            if (responseData.status != 400) {
+    
+            if (responseData.status !== 400) {
                 Swal.fire({
                     position: "center",
                     icon: "success",
@@ -123,11 +108,8 @@ export default function QGDuranteExpediente() {
                     showConfirmButton: false,
                     timer: 2000
                 });
-
-                // Limpa o formulário após a inserção
+    
                 clearForm();
-                // Atualiza os dados na tela após a inserção 
-                // (supõe-se que fetchData() é uma função que busca os dados atualizados)
                 fetchData();
             } else {
                 Swal.fire({
@@ -138,15 +120,8 @@ export default function QGDuranteExpediente() {
                     timer: 2000
                 });
             }
-
-            // Exibe um alerta com a mensagem recebida do servidor após a inserção
-            //  alert(responseData.message);
-
-
         } catch (error) {
-            // Em caso de erro na requisição, exibe um alerta
             toast.error(error);
-            // alert('Erro:', error);
         }
     };
 
@@ -162,60 +137,46 @@ export default function QGDuranteExpediente() {
     // Busca de dados por Id para a edição
     const buscarDadosPorId = async (id) => {
         try {
-            // Faz uma requisição GET para obter os dados de um registro específico com o ID fornecido
             const response = await axios.get(`${dbConfig()}/qg_durante_expediente/selectId/${id}`);
             const data = response.data;
-
-            // Cria uma instância de um modal usando Bootstrap
+    
             const editModal = new bootstrap.Modal(document.getElementById("editarRegistro"));
-
-            // Verifica se há dados retornados antes de definir os estados para evitar erros
+    
             if (data) {
-
-                // Formata a data de entrada para o formato 'yyyy-MM-dd'
-                const dataEntrada = format(new Date(data.dataEntrada), 'yyyy-MM-dd');
-
-                // Define os estados com os dados obtidos da requisição, usando valores padrão vazios caso não haja dados
+                // Formata a data de entrada para o formato 'YYYY-MM-DD'
+                const dataEntradaFormatada = format(new Date(data.dataEntrada), 'yyyy-MM-dd');
+    
                 setId(data.id || "");
                 setPG(data.pg || "");
                 setNomeGuerra(data.nomeGuerra || "");
                 setIdtMil(data.idtMil || "");
-                setDataEntrada(dataEntrada || "");
+                setDataEntrada(dataEntradaFormatada); // Mantém a data original
                 setHoraEntrada(data.horaEntrada || "");
                 setHoraSaida(data.horaSaida || "");
                 setOrigem(data.origem || "");
-
-                // Mostra o modal de edição após definir os estados com os dados
+    
                 editModal.show();
             }
-
+    
         } catch (error) {
-            // Em caso de erro na requisição, exibe um alerta e imprime o erro no console
             toast.error(error);
-            // alert(error);
-            // console.error("Erro ao buscar dados:", error);
         }
     };
 
     // Ao clicar no botão atualizar dados do modal de edição essa função será executada
     const atualizarDadosPorId = async (id) => {
         try {
-            // Envia uma requisição PUT para atualizar os dados do registro com o ID fornecido
             const response = await axios.put(`${dbConfig()}/qg_durante_expediente/${id}`, {
-                // Envia os dados a serem atualizados no corpo da requisição
                 pg,
                 nomeGuerra,
                 idtMil,
-                dataEntrada,
+                dataEntrada, // Mantém a data original
                 horaEntrada: horaEntrada && horaEntrada.trim() !== "" ? horaEntrada : null,
                 horaSaida: horaSaida && horaSaida.trim() !== "" ? horaSaida : null,
                 origem
             });
-
-            // Exibe um alerta com a mensagem da resposta para informar o usuário sobre o resultado da operação
-            // alert(response.data.message);
-
-            if (response.data.status != 400) {
+    
+            if (response.data.status !== 400) {
                 Swal.fire({
                     position: "center",
                     icon: "success",
@@ -223,17 +184,13 @@ export default function QGDuranteExpediente() {
                     showConfirmButton: false,
                     timer: 2000
                 });
-
+    
                 fetchData();
             }
-
-            // Retorna os dados da resposta da requisição
+    
             return response.data;
         } catch (error) {
             const mensagem = error.response.data.message;
-            // Em caso de erro na requisição, exibe um alerta e imprime o erro no console
-            //alert(mensagem);
-            // toast.error(mensagem);
             Swal.fire({
                 position: "center",
                 icon: "error",
@@ -241,11 +198,9 @@ export default function QGDuranteExpediente() {
                 showConfirmButton: false,
                 timer: 2000
             });
-
-            // Lança o erro novamente para ser tratado por quem chamou essa função
-            // throw error;
         }
     };
+    
 
     // Função para deletar um registro pelo ID
     const deleteRegistro = async (id) => {
@@ -479,15 +434,13 @@ export default function QGDuranteExpediente() {
                                     </label>
                                     <input
                                         type="date"
-                                        data-format="00/00/0000"
                                         className="form-control"
                                         id="data-entrada"
-                                        placeholder="Insira a data de entrada"
-                                        required
+                                        value={new Date().toISOString().split('T')[0]} // Data atual
+                                        readOnly // Impede edição
                                     />
-                                    <div className="valid-feedback rounded text-center bg-success text-light">OK!</div>
-                                    <div className="invalid-feedback rounded text-center bg-danger text-light">Campo obrigatório.</div>
                                 </div>
+
 
                                 <div className="col-md-3">
                                     <label htmlFor="hora-entrada" className="form-label">
@@ -557,22 +510,26 @@ export default function QGDuranteExpediente() {
                                 <div className="col-md-4">
                                     <label className="form-label" htmlFor="pg">Posto Graduação</label>
                                     <select className="form-select" id="pg" value={pg.toString()} onChange={(e) => setPG(e.target.value)}>
-                                        <option value=""></option>
-                                        <option value="Soldado">Soldado</option>
-                                        <option value="Taifeiro">Taifeiro</option>
-                                        <option value="Cabo">Cabo</option>
-                                        <option value="Sargento">Sargento</option>
-                                        <option value="Subtenente">Subtenente</option>
-                                        <option value="Aspirante a Oficial">Aspirante a Oficial</option>
-                                        <option value="Tenente">Tenente</option>
-                                        <option value="Capitão">Capitão</option>
-                                        <option value="Major">Major</option>
-                                        <option value="Tenente-Coronel">Tenente-Coronel</option>
-                                        <option value="Coronel">Coronel</option>
-                                        <option value="General de Brigada">General de Brigada</option>
-                                        <option value="General de Divisão">General de Divisão</option>
-                                        <option value="General de Exército">General de Exército</option>
-                                        <option value="Marechal">Marechal</option>
+                                        <option value="">Selecione</option>
+                                        <option value="Gen Ex">General de Exército</option>
+                                        <option value="Gen Div">General de Divisão</option>
+                                        <option value="Gen Bda">General de Brigada</option>
+                                        <option value="Cel">Coronel</option>
+                                        <option value="TC">Tenente-coronel</option>
+                                        <option value="Maj">Major</option>
+                                        <option value="Cap">Capitão</option>
+                                        <option value="1º Ten">1º Tenente</option>
+                                        <option value="2º Ten">2º Tenente</option>
+                                        <option value="Asp">Aspirante a oficial</option>
+                                        <option value="ST">Subtenente</option>
+                                        <option value="1º Sgt">1º Sargento</option>
+                                        <option value="2º Sgt">2º Sargento</option>
+                                        <option value="3º Sgt">3º Sargento</option>
+                                        <option value="Cb">Cabo</option>
+                                        <option value="Sd EP">Soldado Efetivo Profissional</option>
+                                        <option value="Sd EV">Soldado Efetivo Variável</option>
+                                        <option value="Al NPOR">Aluno NPOR</option>
+                                        <option value="Al CFST">Aluno CFST</option>
                                     </select>
                                     <div className="valid-feedback rounded text-center bg-success text-light">OK!</div>
                                     <div className="invalid-feedback rounded text-center bg-danger text-light">Campo obrigatório.</div>
@@ -621,13 +578,9 @@ export default function QGDuranteExpediente() {
                                         type="date"
                                         className="form-control"
                                         id="data-entrada"
-                                        value={dataEntrada}
-                                        onChange={(e) => setDataEntrada(e.target.value)}
-                                        placeholder="Insira a data de entrada"
-                                        required
+                                        value={dataEntrada} // Mantém a data original
+                                        readOnly // Impede edição
                                     />
-                                    <div className="valid-feedback rounded text-center bg-success text-light">OK!</div>
-                                    <div className="invalid-feedback rounded text-center bg-danger text-light">Campo obrigatório.</div>
                                 </div>
 
                                 <div className="col-md-3">

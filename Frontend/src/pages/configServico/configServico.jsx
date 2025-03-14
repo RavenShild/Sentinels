@@ -11,18 +11,24 @@ export default function ConfigServico() {
     const [dataServico, setDataServico] = useState("");
     const [cbNomeGuerra, setCbNomeGuerra] = useState("");
     const [motoristaNomeGuerra, setMotoristaNomeGuerra] = useState("");
-    
+
+    // Define a data atual automaticamente
+    useEffect(() => {
+        const hoje = new Date().toISOString().split("T")[0]; // Obtém a data no formato YYYY-MM-DD
+        setDataServico(hoje);
+    }, []);
+
     // Buscar nome completo do usuário logado
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
                 const token = localStorage.getItem("token");
-                console.log("Token armazenado:", token); // Log para depuração
-        
+                console.log("Token armazenado:", token);
+
                 if (!token) {
                     throw new Error("Usuário não autenticado.");
                 }
-        
+
                 const response = await axios.get(`${dbConfig()}/usuario/dados`, {
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -30,8 +36,8 @@ export default function ConfigServico() {
                     },
                     withCredentials: true,
                 });
-        
-                console.log("Resposta do backend:", response.data); // Log para verificar o retorno da API
+
+                console.log("Resposta do backend:", response.data);
                 if (response.data && response.data.nome_completo) {
                     setNomeCompleto(response.data.nome_completo);
                 } else {
@@ -42,7 +48,7 @@ export default function ConfigServico() {
                 toast.error("Erro ao carregar os dados do usuário.");
             }
         };
-    
+
         fetchUsuario();
     }, []);
 
@@ -52,15 +58,15 @@ export default function ConfigServico() {
         const configurado = 1;
         const dados = {
             configurado,
-            dataServico,
-            sgtNomeGuerra: nomeCompleto, // Preenchendo automaticamente
+            dataServico, // Enviando a data já preenchida automaticamente
+            sgtNomeGuerra: nomeCompleto,
             cbNomeGuerra,
             motoristaNomeGuerra: motoristaNomeGuerra && motoristaNomeGuerra.trim() !== "" ? motoristaNomeGuerra : null,
         };
 
         try {
             const response = await axios.post(`${dbConfig()}/config_servico`, dados);
-            
+
             if (response.status === 201) {
                 Swal.fire({
                     title: "Sucesso!",
@@ -91,8 +97,7 @@ export default function ConfigServico() {
                             className="form-control"
                             id="data-servico"
                             value={dataServico}
-                            onChange={(e) => setDataServico(e.target.value)}
-                            required
+                            readOnly // Impede que o usuário altere a data
                         />
                     </div>
                     <div className="col-md-3">
